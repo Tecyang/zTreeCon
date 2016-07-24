@@ -1,10 +1,10 @@
  /**
  *  author: Yang
  *  email: me@tecyang.com
- *  date: 2016-07-14
- *  version: 0.0.3
+ *  date: 2016年7月24日
+ *  version: 0.0.1
  */
-
+    //得到树中第一个rel为NodeType 的节点并选中
     function SelectFNodeByNodeType(Tree,NodeType){
 	    var treeObj = $("#"+Tree).zTree.getZTreeObj(Tree);
 		var result = null;
@@ -27,15 +27,47 @@
             treeObj.selectNode(result, true);
             //treeObj.checkNode(result,true,true);
         }
-        
-
-            //展开父节点
-            // treeObj.expandNode(treeP, true);
-            //获取该节点 修改样式  需要手动添加isSelect
-            //var idname = result.tId + "_a";
-            // $("#" + idname).attr("class", "curSelectedNode");
         return result;
     }
+    
+    //获取全选节点
+    function getFullCheckedNodes(Tree) {
+        var FullCheckNodes= new Array();　
+        var treeObj = $("#"+Tree).zTree.getZTreeObj(Tree);
+        var node = treeObj.getCheckedNodes();
+        
+         if (node.length > 0) {
+           
+            for (var i = 0; i < node.length; i++) {
+                var n = getNodeByCheckStateT(node[i]);
+                if(n!=null)
+                FullCheckNodes.push(n);
+            }
+        }
+        console.log("全选节点");
+        console.log(FullCheckNodes);
+        return FullCheckNodes;
+        
+    }
+    //获取半选节点 - 外部调用
+    function getHalfCheckedNodes(Tree) {
+        var HalfCheckNodes= new Array();　
+        var treeObj = $("#"+Tree).zTree.getZTreeObj(Tree);
+        var node = treeObj.getCheckedNodes();
+        
+         if (node.length > 0) {
+           
+            for (var i = 0; i < node.length; i++) {
+                var n = getNodeByCheckStateNT(node[i]);
+                if(n!=null)
+                HalfCheckNodes.push(n);
+            }
+        }
+        console.log("半选节点");
+        console.log(HalfCheckNodes);
+        return HalfCheckNodes;
+    }
+
     //获取第一个某类型节点Id（非叶子节点）
     function getFNodeByType(treeNode, result,NodeType) {
     	
@@ -66,47 +98,7 @@
         return result;
     }
 
-    //获取全选节点
-    function getFullCheckedNodes(Tree) {
-        var FullCheckNodes= new Array();　
-        var treeObj = $("#"+Tree).zTree.getZTreeObj(Tree);
-        var node = treeObj.getCheckedNodes();
-        
-         if (node.length > 0) {
-           
-            for (var i = 0; i < node.length; i++) {
-                var n = getNodeByCheckStateT(node[i]);
-                if(n!=null)
-                FullCheckNodes.push(n);
-            }
-        }
-        console.log("全选节点");
-        console.log(FullCheckNodes);
-        return FullCheckNodes;
-        
-    }
-    //获取半选节点
-    function getHalfCheckedNodes(Tree) {
-        var HalfCheckNodes= new Array();　
-        var treeObj = $("#"+Tree).zTree.getZTreeObj(Tree);
-        var node = treeObj.getCheckedNodes();
-        
-         if (node.length > 0) {
-           
-            for (var i = 0; i < node.length; i++) {
-                var n = getNodeByCheckStateNT(node[i]);
-                if(n!=null)
-                HalfCheckNodes.push(n);
-            }
-        }
-        console.log("半选节点");
-        console.log(HalfCheckNodes);
-        return HalfCheckNodes;
-    }
-
-      
-
-      
+/*      Check_Child_State说明
        //判断节点的选择状态（非叶子节点）
        // http://www.ztree.me/v3/api.php
         // setting.check.checkType = "checkbox"
@@ -122,7 +114,7 @@
         // -1  不存在子节点 或 子节点全部设置为 nocheck = true
         // 0   无 子节点被勾选
         // 2   有 子节点被勾选
-
+*/
     //获取checked = true的check_Child_State状态为2节点
     //适用于checkbox
     function getNodeByCheckStateT(treeNode) {
